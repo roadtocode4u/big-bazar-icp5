@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import "./Home.css";
 import ProductCard from '../../components/ProductCard/ProductCard';
+import { checkLogin } from '../../utils/auth';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ function Home() {
   }
 
   useEffect(()=>{
+    checkLogin();
     loadProducts();
   }, []);
 
