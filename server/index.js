@@ -4,6 +4,7 @@ dotenv.config();
 
 import mongoose from 'mongoose';
 import Product from './models/Product.js';
+import User from './models/User.js';
 
 const app = express();
 app.use(express.json());
@@ -11,31 +12,39 @@ app.use(express.json());
 const connectMongoDB = async () => {
   const connection = await mongoose.connect(process.env.MONGODB_URI);
 
-  if(connection){
+  if (connection) {
     console.log('Connected to MongoDB');
   }
 }
 connectMongoDB();
 
-app.post('/product', async (req, res)=>{
-  const { name, price, description } = req.body;
+app.post('/product', async (req, res) => {
+  const { name, price, description, image } = req.body;
 
   const product = new Product({
     name: name,
     price: price,
-    description: description
+    description: description,
+    image: image
   });
 
-  const savedProduct = await product.save();
+  try {
+    const savedProduct = await product.save();
 
-  res.json({
-    success: true,
-    data: savedProduct,
-    message: 'Product added successfully'
-  })
+    res.json({
+      success: true,
+      data: savedProduct,
+      message: 'Product added successfully'
+    })
+  } catch (e) {
+    res.json({
+      success: false,
+      message: e.message
+    })
+  }
 })
 
-app.get('/products', async (req, res)=>{
+app.get('/products', async (req, res) => {
   const products = await Product.find();
 
   res.json({
@@ -45,10 +54,10 @@ app.get('/products', async (req, res)=>{
   })
 })
 
-app.get('/product/:id', async(req, res)=>{
-  const {id} = req.params;
+app.get('/product/:id', async (req, res) => {
+  const { id } = req.params;
 
-  const product = await Product.findOne({_id: id});
+  const product = await Product.findOne({ _id: id });
 
   res.json({
     success: true,
@@ -58,9 +67,9 @@ app.get('/product/:id', async(req, res)=>{
 })
 
 app.delete("/product/:id", async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
-  await Product.deleteOne({_id: id});
+  await Product.deleteOne({ _id: id });
 
   res.json({
     success: true,
@@ -69,16 +78,19 @@ app.delete("/product/:id", async (req, res) => {
 });
 
 app.put("/product/:id", async (req, res) => {
-  const {id} = req.params;
-  const {name, price, description} = req.body;
+  const { id } = req.params;
+  const { name, price, description, image } = req.body;
 
-  await Product.updateOne({_id: id}, {$set: {
-    name: name,
-    price: price,
-    description: description
-  }});
+  await Product.updateOne({ _id: id }, {
+    $set: {
+      name: name,
+      price: price,
+      description: description,
+      image: image
+    }
+  });
 
-  const updatedProduct = await Product.findOne({_id: id});
+  const updatedProduct = await Product.findOne({ _id: id });
 
   res.json({
     success: true,
@@ -86,6 +98,54 @@ app.put("/product/:id", async (req, res) => {
     message: 'Product updated successfully'
   })
 });
+
+app.post("/signup", async(req, res)=>{
+  const {name, email, mobile, password} = req.body;
+
+  const user = new User({
+    name: name,
+    email: email,
+    mobile: mobile,
+    password: password
+  });
+
+  try{
+    const savedUser = await user.save();
+
+    return res.json({
+      success: true,
+      data: savedUser,
+      message: "User registered successfully"
+    })
+  }
+  catch(e){
+    return res.json({
+      success: false,
+      message: e.message
+    })
+  }
+})
+
+app.post("/login", async(req, res)=>{
+  const {email, password} = req.body;
+
+  const user = await User.findOne({email: email, password: password});
+
+  if(user){
+    return res.json({
+      success: true,
+      data: user,
+      message: "User logged in successfully"
+    })
+  }
+  else
+  {
+    return res.json({
+      success: false,
+      message: "Invalid email or password"
+    })
+  }
+})
 
 const PORT = 5000;
 

@@ -1,0 +1,39 @@
+.signup-title{
+  text-align: center;
+}
+
+.signup-container{
+  background-color: #fff;
+  width: fit-content;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  padding: 20px 40px;
+  border-radius: 15px;
+}
+
+.input-label{
+  display: block;
+  font-size: 22px;
+}
+
+.input-field{
+  font-size: 24px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-container{
+  margin: 20px auto;
+}
+
+.signup-btn{
+  background-color: #000;
+  color: #fff;
+  font-size: 24px;
+  padding: 10px 50px;
+  border-radius: 30px;
+  display: block;
+  margin: 20px auto;
+  cursor: pointer;
+}
