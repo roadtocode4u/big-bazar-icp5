@@ -1,6 +1,8 @@
 .buy-container{
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 5px 10px;
 }
 
 .buy-product-image{
@@ -10,4 +12,45 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.quantity-btn{
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.quantity-text{
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.quantity-container{
+  display: flex;
+  align-items: center;
+}
+
+.shipping-address{
+  width: 300px;
+  margin: 20px;
+  font-size: 20px;
+  padding: 10px 20px;
+}
+
+.buy-btn{
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 20px;
+  display: block;
+  margin: 20px auto;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px){
+  .buy-product-image{
+    height: 200px;
+  }
 }
