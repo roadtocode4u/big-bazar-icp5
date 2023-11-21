@@ -167,6 +167,18 @@ app.post("/order", async(req, res)=>{
   })
 })
 
+app.get("/orders", async(req, res)=>{
+  const {id} = req.query;
+
+  const orders = await Order.find({user: id}).populate("product user");
+
+  res.json({
+    success: true,
+    data: orders,
+    message: "Orders retrieved successfully"
+  })
+})
+
 const PORT = 5000;
 
 app.listen(PORT, () => {
